@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Converter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Image Converter</h1>
+    <div class="description">
+      Convert multiple images to JPG format with optional resizing
+    </div>
+    
+    <div class="section">
+      <h2>1. Select Images</h2>
+      <button id="selectFolderBtn" class="btn btn-primary">Select Folder</button>
+      <div id="selectedFolder" class="info-text"></div>
+      <div id="imageList" class="image-list"></div>
+    </div>
+    
+    <div class="section">
+      <h2>2. Resize Options</h2>
+      <div class="resize-options">
+        <label>
+          <input type="radio" name="resizeType" value="none" checked>
+          Keep original size
+        </label>
+        <label>
+          <input type="radio" name="resizeType" value="width">
+          Resize by width (maintain aspect ratio)
+        </label>
+        <label>
+          <input type="radio" name="resizeType" value="height">
+          Resize by height (maintain aspect ratio)
+        </label>
+        <div class="resize-input">
+          <input type="number" id="resizeValue" min="1" max="10000" placeholder="Enter pixels" disabled>
+          <span>pixels</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>3. Output Folder</h2>
+      <button id="selectOutputBtn" class="btn btn-secondary">Select Output Folder</button>
+      <div id="selectedOutput" class="info-text"></div>
+    </div>
+    
+    <div class="section">
+      <button id="convertBtn" class="btn btn-success" disabled>Convert Images</button>
+    </div>
+    
+    <div id="progressSection" class="section hidden">
+      <h2>Progress</h2>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+      <div id="progressText" class="progress-text"></div>
+    </div>
+    
+    <div id="resultsSection" class="section hidden">
+      <h2>Results</h2>
+      <div id="resultsList" class="results-list"></div>
+    </div>
+  </div>
+  
+  <script src="renderer.js"></script>
+</body>
+</html>
