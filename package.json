@@ -1,12 +1,16 @@
 {
   "name": "image-converter",
   "version": "1.0.0",
-  "description": "Windows Image Converter - Batch convert and resize images",
+  "description": "Cross-platform Image Converter - Batch convert and resize images",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux",
+    "dist:all": "electron-builder -mwl"
   },
   "keywords": ["image", "converter", "resize", "jpg"],
   "author": "Your Name",
@@ -29,7 +33,7 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["ia32"]
+          "arch": ["x64", "ia32"]
         }
       ],
       "verifyUpdateCodeSignature": false,
@@ -40,6 +44,34 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "perMachine": true
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        },
+        {
+          "target": "rpm",
+          "arch": ["x64"]
+        }
+      ],
+      "category": "Utility"
     }
   }
 }

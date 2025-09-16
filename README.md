@@ -1,6 +1,6 @@
-# Image Converter for Windows
+# Cross-Platform Image Converter
 
-A simple Windows desktop application for batch converting images to JPG format with optional resizing capabilities.
+A simple cross-platform desktop application for batch converting images to JPG format with optional resizing capabilities. Available for Windows, macOS, and Linux.
 
 ## Features
 
@@ -8,16 +8,19 @@ A simple Windows desktop application for batch converting images to JPG format w
 - Support for various input formats (PNG, GIF, BMP, WebP, TIFF, HEIC/HEIF)
 - Handles iPhone/Apple HEIC photos
 - Optional resizing by width or height while maintaining aspect ratio
-- Simple and intuitive Windows GUI
+- Simple and intuitive cross-platform GUI
 - Fast processing using Sharp image library
 
 ## Installation
 
-### Download Pre-built Installer
+### Download Pre-built Installers
 
 1. Go to the [Releases](../../releases) page
-2. Download the latest `.exe` installer for Windows x86
-3. Run the installer and follow the setup wizard
+2. Download the installer for your platform:
+   - **Windows**: `.exe` installer (x64 and x86)
+   - **macOS**: `.dmg` installer (Intel and Apple Silicon)
+   - **Linux**: `.AppImage`, `.deb`, or `.rpm` package
+3. Run the installer and follow the setup instructions
 
 ### Build from Source
 
@@ -32,8 +35,13 @@ npm install
 # Run in development
 npm start
 
-# Build installer
+# Build installers for your platform
 npm run dist
+
+# Or build for specific platforms
+npm run dist:win    # Windows
+npm run dist:mac    # macOS
+npm run dist:linux  # Linux
 ```
 
 ## Usage
@@ -48,10 +56,13 @@ npm run dist
 
 ## GitHub Actions
 
-The project includes a GitHub Action that automatically builds the Windows installer on every push to main/master branch. You can download the installer artifact from:
+The project includes GitHub Actions that automatically build installers for all platforms on every push to main/master branch. You can download the installer artifacts from:
 
-- **Actions tab**: Go to Actions → Select the latest workflow run → Download the `windows-installer-x86` artifact
-- **Releases**: Automatic releases are created for pushes to main/master
+- **Actions tab**: Go to Actions → Select the latest workflow run → Download artifacts:
+  - `windows-installers` - Windows exe installers
+  - `macos-installers` - macOS dmg installers
+  - `linux-installers` - Linux AppImage, deb, and rpm packages
+- **Releases**: Automatic releases are created for pushes to main/master with all platform installers
 
 ## Technologies Used
 

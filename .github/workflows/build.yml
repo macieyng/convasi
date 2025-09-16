@@ -1,4 +1,4 @@
-name: Build Windows Installer
+name: Build Multi-Platform Installers
 
 on:
   push:
@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -24,26 +24,103 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build Windows installer (x86)
-      run: npm run dist
+    - name: Build Windows installers
+      run: npm run dist:win
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload installer artifact
+    - name: Upload Windows artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: windows-installer-x86
+        name: windows-installers
         path: dist/*.exe
         retention-days: 30
-    
-    - name: Create Release (on push to main/master)
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+  build-mac:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build macOS installers
+      run: npm run dist:mac
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload macOS artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-installers
+        path: dist/*.dmg
+        retention-days: 30
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Linux installers
+      run: npm run dist:linux
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-installers
+        path: |
+          dist/*.AppImage
+          dist/*.deb
+          dist/*.rpm
+        retention-days: 30
+
+  create-release:
+    needs: [build-windows, build-mac, build-linux]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ github.run_number }}
         name: Release Build ${{ github.run_number }}
         draft: false
         prerelease: false
-        files: dist/*.exe
+        files: |
+          artifacts/windows-installers/*.exe
+          artifacts/macos-installers/*.dmg
+          artifacts/linux-installers/*.AppImage
+          artifacts/linux-installers/*.deb
+          artifacts/linux-installers/*.rpm
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
