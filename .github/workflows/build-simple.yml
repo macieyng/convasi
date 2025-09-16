@@ -1,0 +1,47 @@
+name: Build Multi-Platform (Simple)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-all:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            artifact: windows-installer
+            files: dist/*.exe
+          - os: macos-latest
+            platform: mac
+            artifact: macos-installer
+            files: dist/*.dmg
+          - os: ubuntu-latest
+            platform: linux
+            artifact: linux-installer
+            files: dist/*.AppImage,dist/*.deb,dist/*.rpm
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build installer for ${{ matrix.platform }}
+      run: npm run dist:${{ matrix.platform }}
+
+    - name: Upload ${{ matrix.artifact }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact }}
+        path: ${{ matrix.files }}
+        retention-days: 30
