@@ -8,22 +8,29 @@
     "build": "electron-builder",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
+    "dist:win-x64": "electron-builder --win --x64",
+    "dist:win-ia32": "electron-builder --win --ia32",
     "dist:mac": "electron-builder --mac",
     "dist:linux": "electron-builder --linux",
-    "dist:all": "electron-builder -mwl"
+    "dist:all": "electron-builder -mwl",
+    "postinstall": "electron-builder install-app-deps",
+    "rebuild": "electron-rebuild -f -w sharp"
   },
   "keywords": ["image", "converter", "resize", "jpg"],
   "author": "Your Name",
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.9.1",
+    "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
     "sharp": "^0.33.1",
     "heic-convert": "^2.1.0"
   },
   "build": {
+    "npmRebuild": true,
+    "buildDependenciesFromSource": false,
     "appId": "com.yourcompany.imageconverter",
     "productName": "Image Converter",
     "directories": {
@@ -33,7 +40,7 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": ["x64"]
         }
       ],
       "verifyUpdateCodeSignature": false,
