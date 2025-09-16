@@ -17,7 +17,10 @@
     "rebuild": "electron-rebuild -f -w sharp"
   },
   "keywords": ["image", "converter", "resize", "jpg"],
-  "author": "Your Name",
+  "author": {
+    "name": "Image Converter Team",
+    "email": "support@example.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0",
@@ -78,7 +81,11 @@
           "arch": ["x64"]
         }
       ],
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "support@example.com",
+      "vendor": "Image Converter Team",
+      "synopsis": "Batch convert and resize images",
+      "description": "A simple cross-platform application for batch converting images to JPG format with optional resizing capabilities."
     }
   }
 }
